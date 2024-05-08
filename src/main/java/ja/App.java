@@ -1,9 +1,5 @@
 package ja;
 
-/**
- * Hello world!
- *
- */
 import javax.swing.*;
 import java.awt.*;
 
