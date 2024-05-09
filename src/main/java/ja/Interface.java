@@ -39,6 +39,7 @@ public class Interface extends JFrame {
     private JList<String> suggestionList;
     private DefaultListModel<String> listModel;
 
+    private int ileUsunietych = 0;
     private String nowe;
 
     private String[] suggestions = { "Tynkowanie", "Malowanie", "Kafelkowanie", "Układanie paneli", "Szpachlowanie",
@@ -107,6 +108,7 @@ public class Interface extends JFrame {
             m[i].setBounds(280, 240 + i * 40, 100, 40);
             m[i].setFont(font1);
             m[i].setVisible(false);
+            m[i].setHorizontalAlignment(JTextField.RIGHT);
             add(m[i]);
         }
 
@@ -117,6 +119,7 @@ public class Interface extends JFrame {
             zloty[i].setBounds(420, 240 + i * 40, 100, 40);
             zloty[i].setFont(font1);
             zloty[i].setVisible(false);
+            zloty[i].setHorizontalAlignment(JTextField.RIGHT);
             add(zloty[i]);
         }
 
@@ -179,6 +182,62 @@ public class Interface extends JFrame {
         add(napisUlica);
         add(plus);
         add(napisblad);
+
+        for (int i = 0; i < 15; i++) {
+            int index = i; // Zapamiętaj indeks dla ActionListenera wewnątrz pętli
+            usunP[i].addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    // Usuń odpowiednie etykiety, pola tekstowe i zaktualizuj zmienne
+
+                    String napis;
+                    String metry;
+                    String tynki;
+                    String zlo;
+
+                    if (m[index + 1].isVisible()) {
+                        if (tynk[index + 1].isVisible()) {
+                            tynk[index].setVisible(true);
+                            m[index].setVisible(true);
+                            zloty[index].setVisible(true);
+                            m2[index].setVisible(true);
+                            zl[index].setVisible(true);
+                            usunP[index].setVisible(true);
+                        } else {
+
+                            m[index].setVisible(true);
+                            zloty[index].setVisible(true);
+                            m2[index].setVisible(true);
+                            zl[index].setVisible(true);
+                            usunP[index].setVisible(true);
+
+                        }
+
+                    } else {
+                        tynk[index].setVisible(false);
+                        m[index].setVisible(false);
+                        zloty[index].setVisible(false);
+                        m2[index].setVisible(false);
+                        zl[index].setVisible(false);
+                        usunP[index].setVisible(false);
+
+                    }
+
+                    napis = napisP[index + 1].getText();
+                    metry = m[index + 1].getText();
+                    tynki = tynk[index + 1].getText();
+                    zlo = zl[index + 1].getText();
+
+                    napisP[index].setText(napis);
+                    m[index].setText(metry);
+                    tynk[index].setText(tynki);
+                    zl[index].setText(zlo);
+
+                    ileUsunietych++;
+
+                }
+            });
+        }
 
         plus.addActionListener(new ActionListener() {
             @Override
@@ -292,30 +351,34 @@ public class Interface extends JFrame {
                         run1.setText("Wykonana usługa na ulicy " + nazwa + ".\n");
                         run1.setFontFamily("Arial");
                         run1.setFontSize(14);
-                        int sumaCalkowita = 0;
-                        for (int i = 0; i < id; i++) {
+                        Double sumaCalkowita = 0.0;
+                        for (int i = 0; i < id - ileUsunietych; i++) {
                             XWPFParagraph paragraph = document.createParagraph();
                             XWPFRun run = paragraph.createRun();
 
-                            String mText = m[i].getText();
-                            String zlotyText = zloty[i].getText();
+                            String mText = m[i].getText().replace(",", ".");
+                            String zlotyText = zloty[i].getText().replace(",", ".");
 
-                            int mValue = Integer.parseInt(mText);
-                            int zlotyValue = Integer.parseInt(zlotyText);
+                            if (!mText.isEmpty() && !zlotyText.isEmpty()) {
+                                Double mValue = Double.parseDouble(mText);
+                                Double zlotyValue = Double.parseDouble(zlotyText);
 
-                            int suma = mValue * zlotyValue;
-                            sumaCalkowita += suma;
-                            run.setFontFamily("Arial");
-                            if (napisP[i].getText().equals("Tynkowanie")) {
-                                run.setText(
-                                        napisP[i].getText() + " " + tynk[i].getText() + " " + m[i].getText() + " m² x "
-                                                + zloty[i].getText() + "zł = " + suma + "zł");
-                            } else {
-                                run.setText(
-                                        napisP[i].getText() + " "
-                                                + String.format(Locale.getDefault(), "%,d", mValue) + " m² x "
-                                                + String.format(Locale.getDefault(), "%,d", zlotyValue) + "zł = "
-                                                + String.format(Locale.getDefault(), "%,d", suma) + "zł");
+                                Double suma = mValue * zlotyValue;
+                                sumaCalkowita += suma;
+                                run.setFontFamily("Arial");
+                                if (napisP[i].getText().equals("Tynkowanie")) {
+                                    run.setText(
+                                            napisP[i].getText() + " " + tynk[i].getText() + " "
+                                                    + String.format(Locale.getDefault(), "%,.2f", mValue) + " m² x "
+                                                    + String.format(Locale.getDefault(), "%,.2f", zlotyValue) + "zł = "
+                                                    + String.format(Locale.getDefault(), "%,.2f", suma) + "zł");
+                                } else {
+                                    run.setText(
+                                            napisP[i].getText() + " "
+                                                    + String.format(Locale.getDefault(), "%,.2f", mValue) + " m² x "
+                                                    + String.format(Locale.getDefault(), "%,.2f", zlotyValue) + "zł = "
+                                                    + String.format(Locale.getDefault(), "%,.2f", suma) + "zł");
+                                }
                             }
                             run.setFontSize(14);
                         }
@@ -329,7 +392,7 @@ public class Interface extends JFrame {
                         XWPFParagraph paragraph2 = document.createParagraph();
                         XWPFRun run3 = paragraph2.createRun();
                         run3.setText("Suma: "
-                                + String.format(Locale.getDefault(), "%,d", sumaCalkowita) + "zł");
+                                + String.format(Locale.getDefault(), "%,.2f", sumaCalkowita) + "zł");
                         run3.setFontFamily("Arial");
                         run3.setFontSize(14);
 
@@ -356,12 +419,9 @@ public class Interface extends JFrame {
                             }
                         } else {
                             // Obsłuż sytuację, gdy deskryptor pulpitu nie obsługuje otwierania folderów
-                            System.out.println("Otwieranie folderów nie jest obsługiwane.");
                         }
 
-                        System.out.println("Dokument DOCX został pomyślnie utworzony.");
                     } catch (Exception ex) {
-                        System.out.println("Wystąpił błąd podczas tworzenia dokumentu DOCX: " + ex.getMessage());
                         ex.printStackTrace();
                     }
                 }
