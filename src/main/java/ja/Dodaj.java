@@ -59,7 +59,7 @@ public class Dodaj extends JFrame {
                 if (Nazwa.getText().equals("")) {
                     blad.setVisible(true);
                 } else {
-                    Nazwa.setText(tekst);
+                    // Nazwa.setText(tekst);
                     dispose();
                 }
             }

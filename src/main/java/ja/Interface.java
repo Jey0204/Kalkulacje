@@ -39,6 +39,16 @@ public class Interface extends JFrame {
     private JList<String> suggestionList;
     private DefaultListModel<String> listModel;
 
+    private JLabel[] napisP = new JLabel[15];
+    private JLabel[] wyk = new JLabel[15];
+    private JTextField[] zloty = new JTextField[15];
+    private JTextField[] m = new JTextField[15];
+    private JTextField[] tynk = new JTextField[15];
+    private JLabel[] m2 = new JLabel[15];
+    private JLabel[] usunP = new JLabel[15];
+    private JLabel[] zl = new JLabel[15];
+    private int index;
+
     private int ileUsunietych = 0;
     private String nowe;
 
@@ -68,7 +78,7 @@ public class Interface extends JFrame {
         napisblad.setBounds(150, 117, 200, 40);
         napisblad.setForeground(Color.RED);
         napisblad.setVisible(false);
-        addButton.setBounds(250, 880, 200, 40);
+        addButton.setBounds(250, 680, 200, 40);
         searchField.setBounds(70, 150, 500, 40);
 
         Font font = new Font("Arial", Font.BOLD, 25);
@@ -81,16 +91,12 @@ public class Interface extends JFrame {
         plus.setFont(font1);
         addButton.setFont(font1);
 
-        JLabel[] napisP = new JLabel[15];
-
         for (int i = 0; i < 15; i++) {
             napisP[i] = new JLabel("");
             napisP[i].setBounds(75, 240 + i * 40, 205, 40);
             napisP[i].setFont(font1);
             add(napisP[i]);
         }
-
-        JLabel[] wyk = new JLabel[15];
 
         for (int i = 0; i < 15; i++) {
             wyk[i] = new JLabel("!");
@@ -101,8 +107,6 @@ public class Interface extends JFrame {
             add(wyk[i]);
         }
 
-        JTextField[] m = new JTextField[15];
-
         for (int i = 0; i < 15; i++) {
             m[i] = new JTextField();
             m[i].setBounds(280, 240 + i * 40, 100, 40);
@@ -111,8 +115,6 @@ public class Interface extends JFrame {
             m[i].setHorizontalAlignment(JTextField.RIGHT);
             add(m[i]);
         }
-
-        JTextField[] zloty = new JTextField[15];
 
         for (int i = 0; i < 15; i++) {
             zloty[i] = new JTextField();
@@ -123,8 +125,6 @@ public class Interface extends JFrame {
             add(zloty[i]);
         }
 
-        JTextField[] tynk = new JTextField[15];
-
         for (int i = 0; i < 15; i++) {
             tynk[i] = new JTextField();
             tynk[i].setBounds(180, 240 + i * 40, 100, 40);
@@ -132,8 +132,6 @@ public class Interface extends JFrame {
             tynk[i].setVisible(false);
             add(tynk[i]);
         }
-
-        JLabel[] usunP = new JLabel[15];
 
         for (int i = 0; i < 15; i++) {
             usunP[i] = new JLabel("usuń");
@@ -155,7 +153,6 @@ public class Interface extends JFrame {
             add(usunP[i]);
         }
 
-        JLabel[] zl = new JLabel[15];
         for (int i = 0; i < 15; i++) {
             zl[i] = new JLabel("zł");
             zl[i].setBounds(522, 240 + i * 40, 100, 40);
@@ -163,8 +160,6 @@ public class Interface extends JFrame {
             zl[i].setVisible(false);
             add(zl[i]);
         }
-
-        JLabel[] m2 = new JLabel[15];
 
         for (int i = 0; i < 15; i++) {
             m2[i] = new JLabel("m²");
@@ -184,7 +179,7 @@ public class Interface extends JFrame {
         add(napisblad);
 
         for (int i = 0; i < 15; i++) {
-            int index = i; // Zapamiętaj indeks dla ActionListenera wewnątrz pętli
+            index = i; // Zapamiętaj indeks dla ActionListenera wewnątrz pętli
             usunP[i].addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
