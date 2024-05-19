@@ -1,4 +1,4 @@
-## Aplikacja ułatwiajaca tworzenie Kalkulacji dla firm
+## Aplikacja ułatwiajaca tworzenie kalkulacji dla firm
 
 <img src="https://github.com/Jey0204/lukas_projekt/assets/130754053/fb4f4e08-4b9e-4ccd-bf3b-e730591e32c6" width="400"/>
 
