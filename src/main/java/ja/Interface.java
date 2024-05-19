@@ -19,11 +19,7 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 
-import javafx.scene.Scene;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-
-public class Interface extends JFrame {
+public class Interface extends JFrame implements Dodaj.OnServiceAddedListener {
 
     private File desktopDir;
 
@@ -34,22 +30,27 @@ public class Interface extends JFrame {
     private JButton plus;
     private JButton addButton;
 
+    private JLabel jed;
+    private JLabel danem;
+    private JLabel danezl;
+
     private int id = 0;
+    private int ilosc = 12;
     private JTextField searchField;
     private JList<String> suggestionList;
     private DefaultListModel<String> listModel;
 
-    private JLabel[] napisP = new JLabel[15];
-    private JLabel[] wyk = new JLabel[15];
-    private JTextField[] zloty = new JTextField[15];
-    private JTextField[] m = new JTextField[15];
-    private JTextField[] tynk = new JTextField[15];
-    private JLabel[] m2 = new JLabel[15];
-    private JLabel[] usunP = new JLabel[15];
-    private JLabel[] zl = new JLabel[15];
+    private JLabel[] napisP = new JLabel[ilosc];
+    private JLabel[] wyk = new JLabel[ilosc];
+    private JTextField[] jednostki = new JTextField[ilosc];
+    private JTextField[] zloty = new JTextField[ilosc];
+    private JTextField[] m = new JTextField[ilosc];
+    private JTextField[] tynk = new JTextField[ilosc];
+    private JLabel[] m2 = new JLabel[ilosc];
+    private JLabel[] usunP = new JLabel[ilosc];
+    private JLabel[] zl = new JLabel[ilosc];
     private int index;
 
-    private int ileUsunietych = 0;
     private String nowe;
 
     private String[] suggestions = { "Tynkowanie", "Malowanie", "Kafelkowanie", "Układanie paneli", "Szpachlowanie",
@@ -57,10 +58,14 @@ public class Interface extends JFrame {
             "Montaż listew przypodłogowych", "Osadzenie narożników" };
 
     public Interface() {
-        setSize(700, 1000);
+        setSize(700, 820);
         setTitle("Wycena");
 
         setLayout(new BorderLayout());
+
+        danem = new JLabel("metry");
+        danezl = new JLabel("cena");
+        jed = new JLabel("mb/szt/m");
 
         napis = new JLabel("Witaj Lukas!");
         napisblad = new JLabel("Wprowadź nazwę ulicy");
@@ -71,15 +76,19 @@ public class Interface extends JFrame {
         addButton = new JButton("Dodaj");
         plus = new JButton("+");
 
-        plus.setBounds(571, 150, 49, 40);
-        napis.setBounds(290, 30, 150, 40);
-        napisUlica.setBounds(75, 90, 200, 40);
-        Ulica.setBounds(150, 90, 474, 40);
-        napisblad.setBounds(150, 117, 200, 40);
+        danem.setBounds(315, 220, 50, 20);
+        danezl.setBounds(455, 220, 50, 20);
+        jed.setBounds(377, 220, 60, 20);
+
+        plus.setBounds(571, 125, 49, 40);
+        napis.setBounds(290, 20, 150, 40);
+        napisUlica.setBounds(75, 70, 200, 40);
+        Ulica.setBounds(150, 70, 474, 40);
+        napisblad.setBounds(150, 97, 200, 40);
         napisblad.setForeground(Color.RED);
         napisblad.setVisible(false);
-        addButton.setBounds(250, 680, 200, 40);
-        searchField.setBounds(70, 150, 500, 40);
+        addButton.setBounds(250, 725, 200, 40);
+        searchField.setBounds(70, 125, 500, 40);
 
         Font font = new Font("Arial", Font.BOLD, 25);
         napis.setFont(font);
@@ -91,14 +100,14 @@ public class Interface extends JFrame {
         plus.setFont(font1);
         addButton.setFont(font1);
 
-        for (int i = 0; i < 15; i++) {
+        for (int i = 0; i < ilosc; i++) {
             napisP[i] = new JLabel("");
-            napisP[i].setBounds(75, 240 + i * 40, 205, 40);
+            napisP[i].setBounds(72, 240 + i * 40, 205, 40);
             napisP[i].setFont(font1);
             add(napisP[i]);
         }
 
-        for (int i = 0; i < 15; i++) {
+        for (int i = 0; i < ilosc; i++) {
             wyk[i] = new JLabel("!");
             wyk[i].setBounds(60, 240 + i * 40, 205, 40);
             wyk[i].setFont(font1);
@@ -107,7 +116,7 @@ public class Interface extends JFrame {
             add(wyk[i]);
         }
 
-        for (int i = 0; i < 15; i++) {
+        for (int i = 0; i < ilosc; i++) {
             m[i] = new JTextField();
             m[i].setBounds(280, 240 + i * 40, 100, 40);
             m[i].setFont(font1);
@@ -116,24 +125,25 @@ public class Interface extends JFrame {
             add(m[i]);
         }
 
-        for (int i = 0; i < 15; i++) {
+        for (int i = 0; i < ilosc; i++) {
             zloty[i] = new JTextField();
-            zloty[i].setBounds(420, 240 + i * 40, 100, 40);
+            zloty[i].setBounds(425, 240 + i * 40, 100, 40);
             zloty[i].setFont(font1);
             zloty[i].setVisible(false);
             zloty[i].setHorizontalAlignment(JTextField.RIGHT);
             add(zloty[i]);
         }
 
-        for (int i = 0; i < 15; i++) {
+        for (int i = 0; i < ilosc; i++) {
             tynk[i] = new JTextField();
             tynk[i].setBounds(180, 240 + i * 40, 100, 40);
             tynk[i].setFont(font1);
             tynk[i].setVisible(false);
+            tynk[i].setHorizontalAlignment(JTextField.RIGHT);
             add(tynk[i]);
         }
 
-        for (int i = 0; i < 15; i++) {
+        for (int i = 0; i < ilosc; i++) {
             usunP[i] = new JLabel("usuń");
             usunP[i].setBounds(560, 240 + i * 40, 100, 40);
             usunP[i].setFont(font1);
@@ -153,21 +163,30 @@ public class Interface extends JFrame {
             add(usunP[i]);
         }
 
-        for (int i = 0; i < 15; i++) {
+        for (int i = 0; i < ilosc; i++) {
             zl[i] = new JLabel("zł");
-            zl[i].setBounds(522, 240 + i * 40, 100, 40);
+            zl[i].setBounds(530, 240 + i * 40, 100, 40);
             zl[i].setFont(font1);
             zl[i].setVisible(false);
             add(zl[i]);
         }
 
-        for (int i = 0; i < 15; i++) {
-            m2[i] = new JLabel("m²");
-            m2[i].setBounds(390, 240 + i * 40, 100, 40);
-            m2[i].setFont(font1);
-            m2[i].setVisible(false);
-            add(m2[i]);
+        for (int i = 0; i < ilosc; i++) {
+            jednostki[i] = new JTextField();
+            jednostki[i].setBounds(381, 240 + i * 40, 43, 40);
+            jednostki[i].setFont(font1);
+            jednostki[i].setVisible(false);
+            jednostki[i].setHorizontalAlignment(JTextField.RIGHT);
+            add(jednostki[i]);
         }
+
+        danem.setVisible(false);
+        danezl.setVisible(false);
+        jed.setVisible(false);
+
+        add(danem);
+        add(danezl);
+        add(jed);
 
         repaint();
 
@@ -178,57 +197,57 @@ public class Interface extends JFrame {
         add(plus);
         add(napisblad);
 
-        for (int i = 0; i < 15; i++) {
-            index = i; // Zapamiętaj indeks dla ActionListenera wewnątrz pętli
+        for (int i = 0; i < ilosc; i++) {
+            index = i;
             usunP[i].addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    // Usuń odpowiednie etykiety, pola tekstowe i zaktualizuj zmienne
+                    // // Usuń odpowiednie etykiety, pola tekstowe i zaktualizuj zmienne
 
-                    String napis;
-                    String metry;
-                    String tynki;
-                    String zlo;
+                    // String napis;
+                    // String metry;
+                    // String tynki;
+                    // String zlo;
 
-                    if (m[index + 1].isVisible()) {
-                        if (tynk[index + 1].isVisible()) {
-                            tynk[index].setVisible(true);
-                            m[index].setVisible(true);
-                            zloty[index].setVisible(true);
-                            m2[index].setVisible(true);
-                            zl[index].setVisible(true);
-                            usunP[index].setVisible(true);
-                        } else {
+                    // if (m[index + 1].isVisible()) {
+                    // if (tynk[index + 1].isVisible()) {
+                    // tynk[index].setVisible(true);
+                    // m[index].setVisible(true);
+                    // zloty[index].setVisible(true);
+                    // m2[index].setVisible(true);
+                    // zl[index].setVisible(true);
+                    // usunP[index].setVisible(true);
+                    // } else {
 
-                            m[index].setVisible(true);
-                            zloty[index].setVisible(true);
-                            m2[index].setVisible(true);
-                            zl[index].setVisible(true);
-                            usunP[index].setVisible(true);
+                    // m[index].setVisible(true);
+                    // zloty[index].setVisible(true);
+                    // m2[index].setVisible(true);
+                    // zl[index].setVisible(true);
+                    // usunP[index].setVisible(true);
 
-                        }
+                    // }
 
-                    } else {
-                        tynk[index].setVisible(false);
-                        m[index].setVisible(false);
-                        zloty[index].setVisible(false);
-                        m2[index].setVisible(false);
-                        zl[index].setVisible(false);
-                        usunP[index].setVisible(false);
+                    // } else {
+                    // tynk[index].setVisible(false);
+                    // m[index].setVisible(false);
+                    // zloty[index].setVisible(false);
+                    // m2[index].setVisible(false);
+                    // zl[index].setVisible(false);
+                    // usunP[index].setVisible(false);
 
-                    }
+                    // }
 
-                    napis = napisP[index + 1].getText();
-                    metry = m[index + 1].getText();
-                    tynki = tynk[index + 1].getText();
-                    zlo = zl[index + 1].getText();
+                    // napis = napisP[index + 1].getText();
+                    // metry = m[index + 1].getText();
+                    // tynki = tynk[index + 1].getText();
+                    // zlo = zl[index + 1].getText();
 
-                    napisP[index].setText(napis);
-                    m[index].setText(metry);
-                    tynk[index].setText(tynki);
-                    zl[index].setText(zlo);
+                    // napisP[index].setText(napis);
+                    // m[index].setText(metry);
+                    // tynk[index].setText(tynki);
+                    // zl[index].setText(zlo);
 
-                    ileUsunietych++;
+                    // ileUsunietych++;
 
                 }
             });
@@ -237,11 +256,9 @@ public class Interface extends JFrame {
         plus.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
-                Dodaj ok = new Dodaj(nowe);
-
-                ok.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                ok.setVisible(true);
+                Dodaj dodajFrame = new Dodaj(Interface.this);
+                dodajFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                dodajFrame.setVisible(true);
             }
         });
 
@@ -281,18 +298,23 @@ public class Interface extends JFrame {
                         String selectedItem = listModel.getElementAt(index);
 
                         searchField.setText("");
-                        for (int i = 0; i < 16; i++) {
+                        for (int i = 0; i < ilosc + 1; i++) {
 
                             if (napisP[i].getText().isEmpty()) {
                                 napisP[i].setText(selectedItem);
                                 if (selectedItem.equals("Tynkowanie")) {
                                     tynk[i].setVisible(true);
                                 }
-                                m2[i].setVisible(true);
+                                jednostki[i].setVisible(true);
                                 m[i].setVisible(true);
                                 zl[i].setVisible(true);
                                 zloty[i].setVisible(true);
                                 usunP[i].setVisible(true);
+
+                                danem.setVisible(true);
+                                danezl.setVisible(true);
+                                jed.setVisible(true);
+
                                 id++;
                                 break;
 
@@ -306,7 +328,7 @@ public class Interface extends JFrame {
         });
 
         JScrollPane scrollPane = new JScrollPane(suggestionList);
-        scrollPane.setBounds(70, 190, 550, 50);
+        scrollPane.setBounds(70, 168, 550, 50);
         setLayout(null);
 
         add(searchField);
@@ -316,47 +338,63 @@ public class Interface extends JFrame {
 
         desktopDir = new File("C:\\Users\\jessi\\OneDrive\\Pulpit\\Faktura");
         // przycisk dodawania
+
         addButton.addActionListener(new ActionListener() {
+
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (Ulica.getText().equals("")) {
-                    napisblad.setVisible(true);
-                } else {
-                    napisblad.setVisible(false);
 
-                    try {
-                        String nazwa = Ulica.getText();
-                        XWPFDocument document = new XWPFDocument();
+                for (int k = 0; k < id; k++) {
+                    if (Ulica.getText().equals("")) {
+                        napisblad.setVisible(true);
+                    } else if (m[k].getText().equals("") || zl[k].getText().equals("")) {
+                        wyk[k].setVisible(true);
+                    } else {
+                        wyk[k].setVisible(false);
+                        napisblad.setVisible(false);
 
-                        XWPFParagraph imageParagraph = document.createParagraph();
-                        imageParagraph.setAlignment(ParagraphAlignment.RIGHT);
-                        XWPFRun imageRun = imageParagraph.createRun();
-                        String imagePath = "C:\\Users\\jessi\\OneDrive\\Pulpit\\Lukas_projekt\\lukas_projekt\\logojpg.jpg";
-                        try (FileInputStream inputStream = new FileInputStream(imagePath)) {
-                            imageRun.addPicture(inputStream, XWPFDocument.PICTURE_TYPE_JPEG, "nazwa_obrazu",
-                                    Units.toEMU(100),
-                                    Units.toEMU(100));
-                        } catch (IOException ed) {
-                            ed.printStackTrace();
-                        }
+                        try {
+                            String nazwa = Ulica.getText();
+                            XWPFDocument document = new XWPFDocument();
 
-                        XWPFParagraph textParagraph = document.createParagraph();
+                            XWPFParagraph imageParagraph = document.createParagraph();
+                            imageParagraph.setAlignment(ParagraphAlignment.RIGHT);
+                            XWPFRun imageRun = imageParagraph.createRun();
+                            String imagePath = "C:\\Users\\jessi\\OneDrive\\Pulpit\\Lukas_projekt\\lukas_projekt\\logojpg.jpg";
+                            try (FileInputStream inputStream = new FileInputStream(imagePath)) {
+                                imageRun.addPicture(inputStream, XWPFDocument.PICTURE_TYPE_JPEG, "nazwa_obrazu",
+                                        Units.toEMU(100),
+                                        Units.toEMU(100));
+                            } catch (IOException ed) {
+                                ed.printStackTrace();
+                            }
 
-                        XWPFRun run1 = textParagraph.createRun();
-                        run1.setText("Wykonana usługa na ulicy " + nazwa + ".\n");
-                        run1.setFontFamily("Arial");
-                        run1.setFontSize(14);
-                        Double sumaCalkowita = 0.0;
-                        for (int i = 0; i < id - ileUsunietych; i++) {
-                            XWPFParagraph paragraph = document.createParagraph();
-                            XWPFRun run = paragraph.createRun();
+                            XWPFParagraph textParagraph = document.createParagraph();
+                            XWPFRun run1 = textParagraph.createRun();
 
-                            String mText = m[i].getText().replace(",", ".");
-                            String zlotyText = zloty[i].getText().replace(",", ".");
+                            run1.setText("Kosztorys Wykonana usługa na ulicy " + nazwa + ".\n");
+                            run1.setFontFamily("Arial");
+                            run1.setFontSize(14);
+                            Double sumaCalkowita = 0.0;
 
-                            if (!mText.isEmpty() && !zlotyText.isEmpty()) {
+                            XWPFParagraph paragraf = document.createParagraph();
+                            XWPFRun runn = textParagraph.createRun();
+
+                            runn.setText(" ");
+                            runn.setFontFamily("Arial");
+                            runn.setFontSize(14);
+
+                            for (int i = 0; i < id; i++) {
+
+                                XWPFParagraph paragraph = document.createParagraph();
+                                XWPFRun run = paragraph.createRun();
+
+                                String mText = m[i].getText().replace(",", ".");
+                                String zlotyText = zloty[i].getText().replace(",", ".");
+
                                 Double mValue = Double.parseDouble(mText);
                                 Double zlotyValue = Double.parseDouble(zlotyText);
+                                String jedno = jednostki[i].getText().replace("m", "m²").replace(" ", "m²");
 
                                 Double suma = mValue * zlotyValue;
                                 sumaCalkowita += suma;
@@ -364,65 +402,78 @@ public class Interface extends JFrame {
                                 if (napisP[i].getText().equals("Tynkowanie")) {
                                     run.setText(
                                             napisP[i].getText() + " " + tynk[i].getText() + " "
-                                                    + String.format(Locale.getDefault(), "%,.2f", mValue) + " m² x "
+                                                    + String.format(Locale.getDefault(), "%,.2f", mValue) + jedno
+                                                    + " x "
                                                     + String.format(Locale.getDefault(), "%,.2f", zlotyValue) + "zł = "
                                                     + String.format(Locale.getDefault(), "%,.2f", suma) + "zł");
                                 } else {
                                     run.setText(
                                             napisP[i].getText() + " "
-                                                    + String.format(Locale.getDefault(), "%,.2f", mValue) + " m² x "
+                                                    + String.format(Locale.getDefault(), "%,.2f", mValue) + jedno
+                                                    + " x "
                                                     + String.format(Locale.getDefault(), "%,.2f", zlotyValue) + "zł = "
                                                     + String.format(Locale.getDefault(), "%,.2f", suma) + "zł");
                                 }
+
+                                run.setFontSize(14);
+
                             }
-                            run.setFontSize(14);
-                        }
 
-                        XWPFParagraph paragraph1 = document.createParagraph();
-                        XWPFRun run2 = paragraph1.createRun();
-                        run2.setText("_________________________________________________________");
-                        run2.setFontFamily("Arial");
-                        run2.setFontSize(14);
+                            XWPFParagraph paragraph1 = document.createParagraph();
+                            XWPFRun run2 = paragraph1.createRun();
+                            run2.setText("_________________________________________________________");
+                            run2.setFontFamily("Arial");
+                            run2.setFontSize(14);
 
-                        XWPFParagraph paragraph2 = document.createParagraph();
-                        XWPFRun run3 = paragraph2.createRun();
-                        run3.setText("Suma: "
-                                + String.format(Locale.getDefault(), "%,.2f", sumaCalkowita) + "zł");
-                        run3.setFontFamily("Arial");
-                        run3.setFontSize(14);
+                            XWPFParagraph paragraph2 = document.createParagraph();
+                            XWPFRun run3 = paragraph2.createRun();
+                            run3.setText("Suma: "
+                                    + String.format(Locale.getDefault(), "%,.2f", sumaCalkowita) + "zł");
+                            run3.setFontFamily("Arial");
+                            run3.setFontSize(14);
 
-                        // Zapisywanie dokumentu do pliku
-                        File file = new File(desktopDir, nazwa + ".docx");
-                        FileOutputStream out = new FileOutputStream(file);
-                        document.write(out);
-                        out.close();
+                            File file = new File(desktopDir, nazwa + ".docx");
+                            FileOutputStream out = new FileOutputStream(file);
+                            document.write(out);
+                            out.close();
 
-                        // Pobierz deskryptor pulpitu
-                        Desktop desktop = Desktop.getDesktop();
+                            Desktop desktop = Desktop.getDesktop();
 
-                        // Sprawdź, czy deskryptor pulpitu obsługuje otwieranie folderów
-                        if (desktop.isSupported(Desktop.Action.OPEN)) {
-                            // Utwórz obiekt File dla folderu, w którym został zapisany plik
-                            File folder = new File(desktopDir.getAbsolutePath());
+                            if (desktop.isSupported(Desktop.Action.OPEN)) {
+                                File folder = new File(desktopDir.getAbsolutePath());
 
-                            // Spróbuj otworzyć folder za pomocą deskryptora pulpitu
-                            try {
-                                desktop.open(folder);
-                            } catch (IOException ex) {
-                                // Obsłuż wyjątek, jeśli nie udało się otworzyć folderu
-                                ex.printStackTrace();
+                                try {
+                                    desktop.open(folder);
+                                } catch (IOException ex) {
+                                    ex.printStackTrace();
+                                }
+                            } else {
                             }
-                        } else {
-                            // Obsłuż sytuację, gdy deskryptor pulpitu nie obsługuje otwierania folderów
-                        }
 
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
                     }
                 }
             }
         });
 
+    }
+
+    @Override
+    public void onServiceAdded(String serviceName) {
+        for (int i = 0; i < 15; i++) {
+            if (napisP[i].getText().isEmpty()) {
+                napisP[i].setText(serviceName);
+                m[i].setVisible(true);
+                zloty[i].setVisible(true);
+                m2[i].setVisible(true);
+                zl[i].setVisible(true);
+                usunP[i].setVisible(true);
+                id++;
+                break;
+            }
+        }
     }
 
     private void updateSuggestions() {
