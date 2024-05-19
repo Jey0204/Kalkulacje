@@ -81,7 +81,7 @@ public class Interface extends JFrame implements Dodaj.OnServiceAddedListener {
         jed.setBounds(377, 220, 60, 20);
 
         plus.setBounds(571, 125, 49, 40);
-        napis.setBounds(290, 20, 150, 40);
+        napis.setBounds(280, 20, 150, 40);
         napisUlica.setBounds(75, 70, 200, 40);
         Ulica.setBounds(150, 70, 474, 40);
         napisblad.setBounds(150, 97, 200, 40);
@@ -257,7 +257,11 @@ public class Interface extends JFrame implements Dodaj.OnServiceAddedListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Dodaj dodajFrame = new Dodaj(Interface.this);
+                ImageIcon icon = new ImageIcon("C:\\Users\\jessi\\OneDrive\\Pulpit\\projekt_inzynierski\\folder.jpg");
+                dodajFrame.setIconImage(icon.getImage()); // Ustawienie ikony dla okna
+
                 dodajFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
                 dodajFrame.setVisible(true);
             }
         });
@@ -467,7 +471,7 @@ public class Interface extends JFrame implements Dodaj.OnServiceAddedListener {
                 napisP[i].setText(serviceName);
                 m[i].setVisible(true);
                 zloty[i].setVisible(true);
-                m2[i].setVisible(true);
+                jednostki[i].setVisible(true);
                 zl[i].setVisible(true);
                 usunP[i].setVisible(true);
                 id++;
