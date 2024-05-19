@@ -24,5 +24,6 @@ Jeśli są puste pola wyświetla się bład i nie tworzy dokumentu.
 Po zapisaniu otwiera sie folder Kalkulacje na pulpicie z dokumentem o nazwie ulicy. 
 
 <img src="https://github.com/Jey0204/lukas_projekt/assets/130754053/99790afc-b941-498c-9530-482a5e6b9843" width="400"/>
+
 Utworzony dokument w wordzie z logo firmy oraz obliczeniami. 
 
