@@ -49,9 +49,6 @@ public class Interface extends JFrame implements Dodaj.OnServiceAddedListener {
     private JLabel[] m2 = new JLabel[ilosc];
     private JLabel[] usunP = new JLabel[ilosc];
     private JLabel[] zl = new JLabel[ilosc];
-    private int index;
-
-    private String nowe;
 
     private String[] suggestions = { "Tynkowanie", "Malowanie", "Kafelkowanie", "Układanie paneli", "Szpachlowanie",
             "Sucha zabudowa", "Termoizolacja ", "Murowanie", "Montaż stolarki drzwiowej", "Montaż parapetów",
@@ -198,56 +195,44 @@ public class Interface extends JFrame implements Dodaj.OnServiceAddedListener {
         add(napisblad);
 
         for (int i = 0; i < ilosc; i++) {
-            index = i;
+            final int index = i;
             usunP[i].addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    // // Usuń odpowiednie etykiety, pola tekstowe i zaktualizuj zmienne
 
-                    // String napis;
-                    // String metry;
-                    // String tynki;
-                    // String zlo;
+                    if (id == 1) {
+                        System.out.println(id);
 
-                    // if (m[index + 1].isVisible()) {
-                    // if (tynk[index + 1].isVisible()) {
-                    // tynk[index].setVisible(true);
-                    // m[index].setVisible(true);
-                    // zloty[index].setVisible(true);
-                    // m2[index].setVisible(true);
-                    // zl[index].setVisible(true);
-                    // usunP[index].setVisible(true);
-                    // } else {
+                        danem.setVisible(false);
+                        danezl.setVisible(false);
+                        jed.setVisible(false);
+                        zl[index].setVisible(false);
+                        usunP[index].setVisible(false);
+                        jednostki[index].setVisible(false);
+                        napisP[index].setVisible(false);
+                        tynk[index].setVisible(false);
+                        m[index].setVisible(false);
+                        zloty[index].setVisible(false);
+                        id = 0;
+                        System.out.println(id);
+                    } else {
+                        for (int k = index; k < id; k++) {
+                            napisP[k].setText(napisP[k + 1].getText());
+                            zloty[k].setText(zloty[k + 1].getText());
+                            tynk[k].setText(tynk[k + 1].getText());
+                            m[k].setText(m[k + 1].getText());
 
-                    // m[index].setVisible(true);
-                    // zloty[index].setVisible(true);
-                    // m2[index].setVisible(true);
-                    // zl[index].setVisible(true);
-                    // usunP[index].setVisible(true);
+                        }
+                        napisP[id - 1].setVisible(false);
+                        zloty[id - 1].setVisible(false);
+                        tynk[id - 1].setVisible(false);
+                        m[id - 1].setVisible(false);
+                        usunP[id - 1].setVisible(false);
+                        jednostki[id - 1].setVisible(false);
+                        zl[id - 1].setVisible(false);
 
-                    // }
-
-                    // } else {
-                    // tynk[index].setVisible(false);
-                    // m[index].setVisible(false);
-                    // zloty[index].setVisible(false);
-                    // m2[index].setVisible(false);
-                    // zl[index].setVisible(false);
-                    // usunP[index].setVisible(false);
-
-                    // }
-
-                    // napis = napisP[index + 1].getText();
-                    // metry = m[index + 1].getText();
-                    // tynki = tynk[index + 1].getText();
-                    // zlo = zl[index + 1].getText();
-
-                    // napisP[index].setText(napis);
-                    // m[index].setText(metry);
-                    // tynk[index].setText(tynki);
-                    // zl[index].setText(zlo);
-
-                    // ileUsunietych++;
+                        id--;
+                    }
 
                 }
             });
@@ -302,28 +287,27 @@ public class Interface extends JFrame implements Dodaj.OnServiceAddedListener {
                         String selectedItem = listModel.getElementAt(index);
 
                         searchField.setText("");
-                        for (int i = 0; i < ilosc + 1; i++) {
+                        while (id < 15) {
+                            napisP[id].setText(selectedItem);
+                            napisP[id].setVisible(true);
 
-                            if (napisP[i].getText().isEmpty()) {
-                                napisP[i].setText(selectedItem);
-                                if (selectedItem.equals("Tynkowanie")) {
-                                    tynk[i].setVisible(true);
-                                }
-                                jednostki[i].setVisible(true);
-                                m[i].setVisible(true);
-                                zl[i].setVisible(true);
-                                zloty[i].setVisible(true);
-                                usunP[i].setVisible(true);
-
-                                danem.setVisible(true);
-                                danezl.setVisible(true);
-                                jed.setVisible(true);
-
-                                id++;
-                                break;
-
+                            if (selectedItem.equals("Tynkowanie")) {
+                                tynk[id].setVisible(true);
                             }
+                            jednostki[id].setVisible(true);
+                            m[id].setVisible(true);
+                            zl[id].setVisible(true);
+                            zloty[id].setVisible(true);
+                            usunP[id].setVisible(true);
 
+                            danem.setVisible(true);
+                            danezl.setVisible(true);
+                            jed.setVisible(true);
+
+                            id++;
+                            System.out.println(id);
+
+                            break;
                         }
 
                     }
@@ -340,7 +324,7 @@ public class Interface extends JFrame implements Dodaj.OnServiceAddedListener {
         setVisible(true);
         setLocationRelativeTo(null);
 
-        desktopDir = new File("C:\\Users\\jessi\\OneDrive\\Pulpit\\Faktura");
+        desktopDir = new File("C:\\Users\\jessi\\OneDrive\\Pulpit\\Kalkulacje");
         // przycisk dodawania
 
         addButton.addActionListener(new ActionListener() {
@@ -398,18 +382,38 @@ public class Interface extends JFrame implements Dodaj.OnServiceAddedListener {
 
                                 Double mValue = Double.parseDouble(mText);
                                 Double zlotyValue = Double.parseDouble(zlotyText);
-                                String jedno = jednostki[i].getText().replace("m", "m²").replace(" ", "m²");
+                                // nie tobi tego
+                                if (jednostki[i].getText().equals("m") || jednostki[i].getText().equals("")) {
+                                    jednostki[i].setText("m²");
+                                } else if (jednostki[i].getText().equals("szt")) {
+                                    jednostki[i].setText("szt.");
+                                } else if (jednostki[i].getText().equals("mb")) {
+                                    jednostki[i].setText("mb.");
+                                }
+                                String jedno = jednostki[i].getText();
 
                                 Double suma = mValue * zlotyValue;
                                 sumaCalkowita += suma;
                                 run.setFontFamily("Arial");
                                 if (napisP[i].getText().equals("Tynkowanie")) {
-                                    run.setText(
-                                            napisP[i].getText() + " " + tynk[i].getText() + " "
-                                                    + String.format(Locale.getDefault(), "%,.2f", mValue) + jedno
-                                                    + " x "
-                                                    + String.format(Locale.getDefault(), "%,.2f", zlotyValue) + "zł = "
-                                                    + String.format(Locale.getDefault(), "%,.2f", suma) + "zł");
+                                    if (tynk[i].getText().equals("")) {
+                                        run.setText(
+                                                napisP[i].getText() + " "
+                                                        + String.format(Locale.getDefault(), "%,.2f", mValue) + jedno
+                                                        + " x "
+                                                        + String.format(Locale.getDefault(), "%,.2f", zlotyValue)
+                                                        + "zł = "
+                                                        + String.format(Locale.getDefault(), "%,.2f", suma) + "zł");
+                                    } else {
+                                        run.setText(
+                                                napisP[i].getText() + " " + tynk[i].getText() + " "
+                                                        + String.format(Locale.getDefault(), "%,.2f", mValue) + jedno
+                                                        + " x "
+                                                        + String.format(Locale.getDefault(), "%,.2f", zlotyValue)
+                                                        + "zł = "
+                                                        + String.format(Locale.getDefault(), "%,.2f", suma) + "zł");
+                                    }
+
                                 } else {
                                     run.setText(
                                             napisP[i].getText() + " "
@@ -435,8 +439,21 @@ public class Interface extends JFrame implements Dodaj.OnServiceAddedListener {
                                     + String.format(Locale.getDefault(), "%,.2f", sumaCalkowita) + "zł");
                             run3.setFontFamily("Arial");
                             run3.setFontSize(14);
+                            run3.setBold(true);
 
                             File file = new File(desktopDir, nazwa + ".docx");
+
+                            // nie calkiem działa
+
+                            // int counter = 1;
+                            // while (file.exists()) {
+                            // String newFileName = nazwa + " (" + counter + ").docx";
+                            // counter++;
+                            // System.out.println(newFileName);
+                            // file = new File(desktopDir, newFileName);
+
+                            // }
+
                             FileOutputStream out = new FileOutputStream(file);
                             document.write(out);
                             out.close();
